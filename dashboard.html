@@ -1,0 +1,514 @@
+AJS Electric
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AJS Electric | Dashboard</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial, Helvetica, sans-serif;
+background:rgb(130,130,130);
+color:#2600ff;
+}
+
+/* NAV */
+
+nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 40px;
+background:rgb(37,37,37);
+border-bottom:3px solid white;
+flex-wrap:wrap;
+}
+
+nav ul{
+list-style:none;
+display:flex;
+gap:25px;
+}
+
+nav a{
+text-decoration:none;
+color:white;
+font-weight:bold;
+}
+
+nav a:hover{
+color:#32CD32;
+}
+
+.logo{
+height:100px;
+}
+
+/* DASHBOARD GRID */
+
+.dashboard{
+padding:40px;
+max-width:1200px;
+margin:auto;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:25px;
+}
+
+/* CARDS */
+
+.card{
+background:white;
+padding:25px;
+border-radius:10px;
+box-shadow:0 5px 15px rgba(0,0,0,.2);
+}
+
+/* PROFILE */
+
+.profile{
+display:flex;
+align-items:center;
+gap:20px;
+}
+
+.profile img{
+width:110px;
+height:110px;
+border-radius:50%;
+object-fit:cover;
+border:3px solid #32CD32;
+}
+
+/* EMPLOYEE OF MONTH */
+
+.employee{
+display:flex;
+align-items:center;
+gap:20px;
+}
+
+.employee img{
+width:120px;
+border-radius:10px;
+}
+
+/* STATS */
+
+.stats{
+display:flex;
+gap:20px;
+}
+
+.stat{
+background:#32CD32;
+color:white;
+padding:20px;
+border-radius:8px;
+font-weight:bold;
+}
+
+/* SEARCH */
+
+.search input{
+padding:10px;
+width:100%;
+max-width:250px;
+}
+
+/* TICKETS */
+
+.ticket{
+background:#f5f5f5;
+padding:20px;
+border-radius:10px;
+margin-bottom:15px;
+border-left:5px solid #32CD32;
+}
+
+button{
+margin-top:10px;
+margin-right:10px;
+padding:10px 15px;
+border:none;
+background:#32CD32;
+color:white;
+cursor:pointer;
+border-radius:5px;
+}
+
+button:hover{
+background:#28a428;
+}
+
+/* ADMIN PANEL */
+
+.admin-panel{
+grid-column:span 2;
+}
+
+/* MOBILE */
+
+@media (max-width:768px){
+
+.dashboard{
+grid-template-columns:1fr;
+}
+
+nav ul{
+flex-direction:column;
+width:100%;
+}
+
+.stats{
+flex-direction:column;
+}
+
+button{
+width:100%;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<script>
+
+/* LOGIN PROTECTION */
+
+if(localStorage.getItem("ajsLoggedIn") !== "true"){
+window.location.href="login.html";
+}
+
+let role = localStorage.getItem("role");
+let currentUser = localStorage.getItem("currentUser");
+
+if(role === "member"){
+alert("Members cannot access the dashboard");
+window.location.href="index.html";
+}
+
+</script>
+
+<!-- NAV -->
+
+<nav>
+
+<img src="ajselectric2.jpg" class="logo">
+
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="services.html">Services</a></li>
+<li><a href="request.html">Request Service</a></li>
+<li><a href="dashboard.html">Dashboard</a></li>
+<li><a href="#" onclick="logout()">Logout</a></li>
+</ul>
+
+</nav>
+
+<div class="dashboard">
+
+<!-- PROFILE -->
+
+<div class="card">
+
+<h2>Logged In Employee</h2>
+
+<div class="profile">
+
+<img id="profileImage" src="defaultUser.png">
+
+<div>
+<h3 id="employeeName"></h3>
+<p id="employeeRole"></p>
+</div>
+
+</div>
+
+<br>
+
+<input type="file" id="uploadPhoto" accept="image/*">
+
+<button onclick="uploadPhoto()">Upload Profile Picture</button>
+
+</div>
+
+<!-- EMPLOYEE OF MONTH -->
+
+<div class="card">
+
+<h2>Employee of the Month</h2>
+
+<div class="employee">
+
+<img src="EotMTest.jpg">
+
+<div>
+<h3>Ally</h3>
+<p>Wife of the owner.</p>
+</div>
+
+</div>
+
+</div>
+
+<!-- STATS -->
+
+<div class="card stats">
+
+<div class="stat">
+Open Tickets: <span id="openCount">0</span>
+</div>
+
+<div class="stat">
+Archived Tickets: <span id="archiveCount">0</span>
+</div>
+
+</div>
+
+<!-- SEARCH -->
+
+<div class="card">
+
+<h2>Search Tickets</h2>
+
+<div class="search">
+<input id="search" placeholder="Search by name or phone" onkeyup="searchTickets()">
+</div>
+
+</div>
+
+<!-- TICKETS -->
+
+<div class="card" style="grid-column:span 2">
+
+<h2>Active Service Tickets</h2>
+
+<div id="ticketList"></div>
+
+</div>
+
+<!-- ADMIN PANEL -->
+
+<div class="card admin-panel" id="adminPanel">
+
+<h2>Administrator Controls</h2>
+
+<button onclick="window.location.href='users.html'">Manage Users</button>
+
+<button onclick="window.location.href='archived.html'">Archived Tickets</button>
+
+<button onclick="window.location.href='schedule.html'">Schedule Jobs</button>
+
+</div>
+
+</div>
+
+<script>
+
+/* LOGOUT */
+
+function logout(){
+
+localStorage.removeItem("ajsLoggedIn");
+localStorage.removeItem("role");
+localStorage.removeItem("currentUser");
+
+window.location.href="login.html";
+
+}
+
+/* PROFILE LOADER */
+
+function loadProfile(){
+
+let users = JSON.parse(localStorage.getItem("users")) || [];
+
+let user = users.find(u => u.username === currentUser);
+
+if(user){
+
+document.getElementById("employeeName").innerText = user.username;
+document.getElementById("employeeRole").innerText = "Role: " + user.role;
+
+if(user.photo){
+document.getElementById("profileImage").src = user.photo;
+}
+
+}
+
+}
+
+/* PROFILE PHOTO UPLOAD */
+
+function uploadPhoto(){
+
+let file = document.getElementById("uploadPhoto").files[0];
+
+if(!file){
+alert("Please select a photo");
+return;
+}
+
+let reader = new FileReader();
+
+reader.onload = function(e){
+
+let users = JSON.parse(localStorage.getItem("users")) || [];
+
+let user = users.find(u => u.username === currentUser);
+
+if(user){
+
+user.photo = e.target.result;
+
+localStorage.setItem("users", JSON.stringify(users));
+
+document.getElementById("profileImage").src = e.target.result;
+
+alert("Profile picture updated!");
+
+}
+
+}
+
+reader.readAsDataURL(file);
+
+}
+
+/* STATS */
+
+function loadStats(){
+
+let tickets = JSON.parse(localStorage.getItem("tickets")) || [];
+let archived = JSON.parse(localStorage.getItem("archivedTickets")) || [];
+
+document.getElementById("openCount").innerText = tickets.length;
+document.getElementById("archiveCount").innerText = archived.length;
+
+}
+
+/* LOAD TICKETS */
+
+function loadTickets(){
+
+let tickets = JSON.parse(localStorage.getItem("tickets")) || [];
+
+renderTickets(tickets);
+
+}
+
+/* RENDER TICKETS */
+
+function renderTickets(tickets){
+
+let list=document.getElementById("ticketList");
+
+list.innerHTML="";
+
+if(tickets.length===0){
+list.innerHTML="<p>No tickets available</p>";
+return;
+}
+
+tickets.reverse().forEach((t,i)=>{
+
+let div=document.createElement("div");
+
+div.className="ticket";
+
+let buttons=`<button onclick="archiveTicket(${i})">Archive</button>`;
+
+if(role==="admin"){
+buttons+=`<button onclick="deleteTicket(${i})">Delete</button>`;
+}
+
+div.innerHTML=`
+
+<strong>${t.name}</strong><br>
+Phone: ${t.phone}<br>
+${t.message}<br>
+<small>${t.date}</small><br>
+${buttons}
+
+`;
+
+list.appendChild(div);
+
+});
+
+}
+
+/* ARCHIVE */
+
+function archiveTicket(i){
+
+let tickets = JSON.parse(localStorage.getItem("tickets")) || [];
+let archived = JSON.parse(localStorage.getItem("archivedTickets")) || [];
+
+archived.push(tickets[i]);
+tickets.splice(i,1);
+
+localStorage.setItem("tickets",JSON.stringify(tickets));
+localStorage.setItem("archivedTickets",JSON.stringify(archived));
+
+loadTickets();
+loadStats();
+
+}
+
+/* DELETE */
+
+function deleteTicket(i){
+
+let tickets = JSON.parse(localStorage.getItem("tickets")) || [];
+
+tickets.splice(i,1);
+
+localStorage.setItem("tickets",JSON.stringify(tickets));
+
+loadTickets();
+loadStats();
+
+}
+
+/* SEARCH */
+
+function searchTickets(){
+
+let search=document.getElementById("search").value.toLowerCase();
+
+let tickets = JSON.parse(localStorage.getItem("tickets")) || [];
+
+let filtered = tickets.filter(t =>
+t.name.toLowerCase().includes(search) ||
+t.phone.includes(search)
+);
+
+renderTickets(filtered);
+
+}
+
+/* ADMIN CONTROL */
+
+if(role !== "admin"){
+document.getElementById("adminPanel").style.display="none";
+}
+
+loadProfile();
+loadTickets();
+loadStats();
+
+</script>
+
+</body>
+</html>
+```

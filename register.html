@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AJS Electric | Register Employee</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial, Helvetica, sans-serif;
+background:rgb(130,130,130);
+color:#2600ff;
+}
+
+nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 40px;
+background:rgb(37,37,37);
+border-bottom:3px solid #ffffff;
+}
+
+nav ul{
+list-style:none;
+display:flex;
+gap:25px;
+}
+
+nav a{
+text-decoration:none;
+color:white;
+font-weight:bold;
+}
+
+nav a:hover{
+color:#32CD32;
+}
+
+.register-container{
+display:flex;
+justify-content:center;
+align-items:center;
+height:80vh;
+}
+
+.register-box{
+background:white;
+padding:40px;
+border-radius:10px;
+width:320px;
+box-shadow:0 5px 15px rgba(0,0,0,.2);
+}
+
+h2{
+text-align:center;
+color:#32CD32;
+}
+
+input{
+width:100%;
+padding:12px;
+margin-top:10px;
+border:1px solid #ccc;
+border-radius:5px;
+}
+
+button{
+width:100%;
+margin-top:15px;
+padding:12px;
+background:#32CD32;
+border:none;
+color:white;
+font-weight:bold;
+border-radius:5px;
+cursor:pointer;
+}
+
+button:hover{
+background:#2eb82e;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<nav>
+
+<img src="ajselectric2.jpg" height="100">
+
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="services.html">Services</a></li>
+<li><a href="request.html">Request Service</a></li>
+<li><a href="login.html">Employee Login</a></li>
+</ul>
+
+</nav>
+
+<div class="register-container">
+
+<div class="register-box">
+
+<h2>Register Employee</h2>
+
+<input id="newUser" placeholder="Username">
+
+<input id="newPass" type="password" placeholder="Password">
+
+<button onclick="register()">Register</button>
+
+</div>
+
+</div>
+
+<script>
+
+function register(){
+
+let username=document.getElementById("newUser").value;
+let password=document.getElementById("newPass").value;
+
+if(username==="" || password===""){
+alert("Please fill in all fields");
+return;
+}
+
+let users=JSON.parse(localStorage.getItem("ajsUsers")) || [];
+
+users.push({
+username:username,
+password:password,
+role:"employee"
+});
+
+localStorage.setItem("ajsUsers", JSON.stringify(users));
+
+alert("User registered successfully!");
+
+window.location.href="login.html";
+
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AJS Electric | Archived Tickets</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial, Helvetica, sans-serif;
+background:rgb(130,130,130);
+}
+
+/* NAV */
+
+nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 40px;
+background:rgb(130,130,130);
+border-bottom:3px solid white;
+}
+
+nav ul{
+list-style:none;
+display:flex;
+gap:25px;
+}
+
+nav a{
+text-decoration:none;
+color:white;
+font-weight:bold;
+}
+
+nav a:hover{
+color:#32CD32;
+}
+
+/* PAGE */
+
+.container{
+max-width:1000px;
+margin:auto;
+padding:40px;
+}
+
+/* CARD */
+
+.card{
+background:white;
+padding:30px;
+border-radius:10px;
+box-shadow:0 5px 15px rgba(0,0,0,.2);
+}
+
+.ticket{
+background:#f5f5f5;
+padding:15px;
+margin-bottom:15px;
+border-radius:8px;
+border:1px solid #ddd;
+}
+
+button{
+padding:8px 16px;
+border:none;
+background:#32CD32;
+color:white;
+font-weight:bold;
+border-radius:5px;
+cursor:pointer;
+margin-right:10px;
+}
+
+button:hover{
+background:#2eb82e;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<script>
+
+/* LOGIN CHECK */
+
+if(localStorage.getItem("ajsLoggedIn") !== "true"){
+window.location.href="login.html";
+}
+
+/* ADMIN ONLY */
+
+const role = localStorage.getItem("role");
+
+if(role !== "admin"){
+alert("Administrator access only.");
+window.location.href="dashboard.html";
+}
+
+</script>
+
+<!-- NAV -->
+
+<nav>
+
+<img src="ajselectric2.jpg" height="100">
+
+<ul>
+<li><a href="dashboard.html">Dashboard</a></li>
+<li><a href="admin.html">Admin Panel</a></li>
+<li><a href="archived.html">Archived Tickets</a></li>
+</ul>
+
+</nav>
+
+<!-- CONTENT -->
+
+<div class="container">
+
+<div class="card">
+
+<h2>Archived Service Tickets</h2>
+
+<div id="archiveList"></div>
+
+</div>
+
+</div>
+
+<script>
+
+function loadArchived(){
+
+let archived = JSON.parse(localStorage.getItem("archivedTickets")) || [];
+
+let list = document.getElementById("archiveList");
+
+list.innerHTML="";
+
+if(archived.length===0){
+
+list.innerHTML="<p>No archived tickets.</p>";
+return;
+
+}
+
+archived.reverse().forEach((t,index)=>{
+
+let div=document.createElement("div");
+
+div.className="ticket";
+
+div.innerHTML=`
+
+<strong>${t.name}</strong><br>
+Email: ${t.email}<br>
+Phone: ${t.phone}<br>
+Address: ${t.address}<br><br>
+
+${t.message}<br><br>
+
+<small>${t.date}</small><br><br>
+
+`;
+
+/* RESTORE BUTTON */
+
+let restoreBtn=document.createElement("button");
+restoreBtn.innerText="Restore Ticket";
+restoreBtn.onclick=function(){
+restoreTicket(index);
+};
+
+/* DELETE BUTTON */
+
+let deleteBtn=document.createElement("button");
+deleteBtn.innerText="Delete Permanently";
+deleteBtn.onclick=function(){
+deleteArchive(index);
+};
+
+div.appendChild(restoreBtn);
+div.appendChild(deleteBtn);
+
+list.appendChild(div);
+
+});
+
+}
+
+loadArchived();
+
+/* RESTORE */
+
+function restoreTicket(i){
+
+let archived = JSON.parse(localStorage.getItem("archivedTickets")) || [];
+let tickets = JSON.parse(localStorage.getItem("tickets")) || [];
+
+tickets.push(archived[i]);
+
+archived.splice(i,1);
+
+localStorage.setItem("tickets",JSON.stringify(tickets));
+localStorage.setItem("archivedTickets",JSON.stringify(archived));
+
+loadArchived();
+
+}
+
+/* DELETE */
+
+function deleteArchive(i){
+
+let archived = JSON.parse(localStorage.getItem("archivedTickets")) || [];
+
+archived.splice(i,1);
+
+localStorage.setItem("archivedTickets",JSON.stringify(archived));
+
+loadArchived();
+
+}
+
+</script>
+
+</body>
+</html>

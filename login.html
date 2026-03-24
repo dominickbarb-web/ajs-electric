@@ -1,0 +1,253 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AJS Electric | Login</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:rgb(130,130,130);
+color:#2600ff;
+}
+
+nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 40px;
+background:rgb(130,130,130);
+border-bottom:3px solid white;
+}
+
+nav ul{
+list-style:none;
+display:flex;
+gap:25px;
+}
+
+nav a{
+color:white;
+text-decoration:none;
+font-weight:bold;
+}
+
+nav a:hover{
+color:#32CD32;
+}
+
+.logo{
+height:100px;
+}
+
+.container{
+display:flex;
+justify-content:center;
+align-items:center;
+height:80vh;
+}
+
+.box{
+background:white;
+padding:30px;
+border-radius:10px;
+width:300px;
+text-align:center;
+}
+
+input{
+width:100%;
+padding:10px;
+margin:10px 0;
+}
+
+button{
+width:100%;
+padding:10px;
+background:#32CD32;
+border:none;
+color:white;
+cursor:pointer;
+}
+
+button:hover{
+background:#28a428;
+}
+
+.toggle{
+margin-top:10px;
+cursor:pointer;
+color:#32CD32;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<nav>
+
+<img src="ajselectric2.jpg" class="logo">
+
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="services.html">Services</a></li>
+<li><a href="request.html">Request Service</a></li>
+</ul>
+
+</nav>
+
+<div class="container">
+
+<div class="box">
+
+<h2 id="formTitle">Employee Login</h2>
+
+<!-- LOGIN -->
+
+<div id="loginForm">
+
+<input id="loginUser" placeholder="Username">
+<input id="loginPass" type="password" placeholder="Password">
+
+<button onclick="login()">Login</button>
+
+<p class="toggle" onclick="showRegister()">Create Account</p>
+
+</div>
+
+<!-- REGISTER -->
+
+<div id="registerForm" style="display:none;">
+
+<input id="regUser" placeholder="Username">
+<input id="regPass" type="password" placeholder="Password">
+
+<input id="adminKey" placeholder="Admin Key (leave blank if not admin)">
+
+<button onclick="register()">Register</button>
+
+<p class="toggle" onclick="showLogin()">Back to Login</p>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+/* 🔥 AUTO CREATE ADMIN ACCOUNT (RUNS FIRST) */
+
+(function(){
+
+let users = JSON.parse(localStorage.getItem("users")) || [];
+
+let adminExists = users.some(u => u.role === "admin");
+
+if(!adminExists){
+
+users.push({
+username: "DominickBarb",
+password: "Dbarb04!",
+role: "admin"
+});
+
+localStorage.setItem("users", JSON.stringify(users));
+
+console.log("Default admin created: admin / admin123");
+
+}
+
+})();
+
+/* SWITCH FORMS */
+
+function showRegister(){
+document.getElementById("loginForm").style.display="none";
+document.getElementById("registerForm").style.display="block";
+document.getElementById("formTitle").innerText="Register";
+}
+
+function showLogin(){
+document.getElementById("loginForm").style.display="block";
+document.getElementById("registerForm").style.display="none";
+document.getElementById("formTitle").innerText="Employee Login";
+}
+
+/* REGISTER */
+
+function register(){
+
+let username = document.getElementById("regUser").value;
+let password = document.getElementById("regPass").value;
+let adminKey = document.getElementById("adminKey").value;
+
+/* 🔐 CHANGE THIS */
+const SECRET_KEY = "JSmith0214";
+
+let users = JSON.parse(localStorage.getItem("users")) || [];
+
+/* Prevent duplicate usernames */
+if(users.find(u => u.username === username)){
+alert("Username already exists");
+return;
+}
+
+let role = "member";
+
+/* Only YOU can create admin */
+if(adminKey === SECRET_KEY){
+role = "admin";
+}
+
+users.push({
+username:username,
+password:password,
+role:role
+});
+
+localStorage.setItem("users", JSON.stringify(users));
+
+alert("Account created!");
+
+showLogin();
+
+}
+
+/* LOGIN */
+
+function login(){
+
+let username = document.getElementById("loginUser").value;
+let password = document.getElementById("loginPass").value;
+
+let users = JSON.parse(localStorage.getItem("users")) || [];
+
+let user = users.find(u => u.username === username && u.password === password);
+
+if(user){
+
+localStorage.setItem("ajsLoggedIn","true");
+localStorage.setItem("currentUser",username);
+localStorage.setItem("role",user.role);
+
+window.location.href="dashboard.html";
+
+}else{
+alert("Invalid login");
+}
+
+}
+
+</script>
+
+</body>
+</html>
+```

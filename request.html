@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AJS Electric | Request Service</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial, Helvetica, sans-serif;
+background:rgb(130,130,130);
+color:#2600ff;
+}
+
+nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 40px;
+background:rgb(37,37,37);
+border-bottom:3px solid #ffffff;
+}
+
+nav ul{
+list-style:none;
+display:flex;
+gap:25px;
+}
+
+nav a{
+text-decoration:none;
+color:white;
+font-weight:bold;
+}
+
+nav a:hover{
+color:#32CD32;
+}
+
+section{
+padding:80px 20px;
+max-width:1100px;
+margin:auto;
+}
+
+h2{
+color:white;
+}
+
+form{
+display:flex;
+flex-direction:column;
+gap:15px;
+max-width:500px;
+}
+
+input, textarea{
+padding:12px;
+border:1px solid #ccc;
+border-radius:5px;
+}
+
+button{
+background:#32CD32;
+border:none;
+padding:15px;
+font-weight:bold;
+color:white;
+cursor:pointer;
+border-radius:5px;
+}
+
+button:hover{
+background:#2eb82e;
+}
+
+footer{
+text-align:center;
+padding:40px;
+background:white;
+border-top:3px solid #ffffff;
+margin-top:50px;
+}
+
+.call-btn{
+position:fixed;
+bottom:20px;
+right:20px;
+background:#32CD32;
+color:white;
+padding:15px 25px;
+font-weight:bold;
+border-radius:50px;
+text-decoration:none;
+box-shadow:0 5px 15px rgba(0,0,0,.2);
+}
+
+</style>
+</head>
+
+<body>
+
+<nav>
+
+<img src="ajselectric2.jpg" height="100">
+
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="services.html">Services</a></li>
+<li><a href="request.html">Request Service</a></li>
+<li><a href="login.html">Employee Login</a></li>
+</ul>
+
+</nav>
+
+<section id="contact">
+
+<h2>Request Electrical Service</h2>
+
+<form id="contactForm">
+
+<input id="name" placeholder="Name" required>
+<input id="email" placeholder="Email" required>
+<input id="phone" placeholder="Phone Number" required>
+<input id="Address" placeholder="Address" required>
+<textarea id="message" placeholder="Describe your electrical issue" required></textarea>
+
+<button type="submit">Submit Request</button>
+
+</form>
+
+</section>
+
+<footer>
+
+<p>AJS Electric</p>
+<p>(573) 821-0257</p>
+<p>Professional Electrical Services</p>
+
+</footer>
+
+<a class="call-btn" href="tel:5738210257">Call Now</a>
+
+<script>
+
+document.getElementById("contactForm").addEventListener("submit", function(e){
+
+e.preventDefault();
+
+let ticket = {
+
+name: document.getElementById("name").value,
+email: document.getElementById("email").value,
+phone: document.getElementById("phone").value,
+address: document.getElementById("Address").value,
+message: document.getElementById("message").value,
+date: new Date().toLocaleString()
+
+};
+
+let tickets = JSON.parse(localStorage.getItem("tickets")) || [];
+
+tickets.push(ticket);
+
+localStorage.setItem("tickets", JSON.stringify(tickets));
+
+alert("Service request submitted successfully!");
+
+document.getElementById("contactForm").reset();
+
+});
+
+</script>
+
+</body>
+</html>

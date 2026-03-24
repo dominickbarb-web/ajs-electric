@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<title>AJS Electric | Admin Panel</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f5f5f5;
+padding:40px;
+}
+
+.panel{
+background:white;
+padding:30px;
+border-radius:10px;
+margin-bottom:25px;
+box-shadow:0 4px 10px rgba(0,0,0,.1);
+}
+
+button{
+padding:10px 20px;
+background:#32CD32;
+border:none;
+color:white;
+font-weight:bold;
+border-radius:5px;
+cursor:pointer;
+}
+
+button:hover{
+background:#2eb82e;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<script>
+
+/* ADMIN SECURITY */
+
+if(localStorage.getItem("role") !== "admin"){
+alert("Administrator access only.");
+window.location.href="dashboard.html";
+}
+
+</script>
+
+<h1>AJS Electric Administrator Panel</h1>
+
+
+<div class="panel">
+
+<h2>Promote Employee</h2>
+
+<input placeholder="Employee Username">
+
+<button>Promote to Admin</button>
+
+</div>
+
+
+<div class="panel">
+
+<h2>Manage Users</h2>
+
+<button>View All Users</button>
+<button>Remove User</button>
+<button>Reset Password</button>
+
+</div>
+
+
+</body>
+</html>
