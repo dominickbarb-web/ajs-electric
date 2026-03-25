@@ -1,4 +1,4 @@
-AJS Electric
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -63,7 +63,7 @@ margin-top:30px;
 
 .cta a{
 background:#32CD32;
-color:rgb(255, 255, 255);
+color:white;
 padding:15px 35px;
 text-decoration:none;
 font-weight:bold;
@@ -116,35 +116,6 @@ transition:0.3s;
 transform:scale(1.05);
 }
 
-/* FORM */
-
-form{
-display:flex;
-flex-direction:column;
-gap:15px;
-max-width:500px;
-}
-
-input, textarea{
-padding:12px;
-border:1px solid #ccc;
-border-radius:5px;
-}
-
-button{
-background:#32CD32;
-border:none;
-padding:15px;
-font-weight:bold;
-color:white;
-cursor:pointer;
-border-radius:5px;
-}
-
-button:hover{
-background:#2eb82e;
-}
-
 footer{
 text-align:center;
 padding:40px;
@@ -176,10 +147,9 @@ box-shadow:0 5px 15px rgba(0,0,0,.2);
 <img src="ajselectric2.jpg" height="100">
 
 <ul>
-<li><a href="#">Home</a></li>
-<li><a href="#services">Services</a></li>
-<li><a href="#gallery">Gallery</a></li>
-<li><a href="#contact">Request Service</a></li>
+<li><a href="index.html">Home</a></li>
+<li><a href="services.html">Services</a></li>
+<li><a href="request.html">Request Service</a></li>
 <li><a href="login.html">Employee Login</a></li>
 </ul>
 
@@ -191,7 +161,7 @@ box-shadow:0 5px 15px rgba(0,0,0,.2);
 <p>Professional Residential & Commercial Electrical Services</p>
 
 <div class="cta">
-<a href="#contact">Request Service</a>
+<a href="request.html">Request Service</a>
 </div>
 
 </section>
@@ -226,7 +196,7 @@ box-shadow:0 5px 15px rgba(0,0,0,.2);
 
 </section>
 
-<!-- GALLERY ADDED HERE -->
+<!-- GALLERY -->
 
 <section id="gallery">
 
@@ -244,25 +214,6 @@ box-shadow:0 5px 15px rgba(0,0,0,.2);
 <img src="job8.jpg">
 
 </div>
-
-</section>
-
-<section id="contact">
-
-<h2>Request Electrical Service</h2>
-
-<form id="contactForm">
-
-<input placeholder="Name" required>
-<input placeholder="Email" required>
-<input placeholder="Phone Number" required>
-<input placeholder="Address" required>
-
-<textarea placeholder="Describe your electrical issue" required></textarea>
-
-<button type="submit">Submit Request</button>
-
-</form>
 
 </section>
 
